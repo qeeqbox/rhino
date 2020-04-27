@@ -1,0 +1,66 @@
+version: "3"
+services:
+  backend_api:
+    build:
+      context: .
+      dockerfile: ./backend-api-Dockerfile
+    restart: always
+    ports:
+     - "5001:5001"
+    depends_on:
+      - redis
+    networks:
+      - backend
+      - frontend
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+  frontend_website:
+    build:
+      context: .
+      dockerfile: ./frontend-Dockerfile
+    restart: always
+    ports:
+     - "5000:5000"
+    depends_on:
+      - backend_api
+    links:
+      - backend_api
+    networks:
+      - backend
+      - frontend
+
+  redis:
+    image: redis
+    networks:
+      - backend
+      - frontend
+    ports:
+     - "6379:6379"
+
+  mongodb:
+    build:
+      context: .
+      dockerfile: ./mongodb-Dockerfile
+    #image: mongo
+    restart: always
+    networks:
+      - backend
+      - frontend
+    logging:
+        driver: none #no logging 
+    ports:
+     - "27017:27017"
+    logging:
+        driver: none #no logging 
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./folders/database:/data/db
+
+networks:
+  frontend:
+    internal: false
+  backend:
+    internal: true

@@ -1,0 +1,12 @@
+2020-04-27 17:51:42.393626 b20bf0f8-202c-40cc-9268-e888c2f8005d Killing Ubuntu18 by vboxmanage
+2020-04-27 17:51:42.704781 b20bf0f8-202c-40cc-9268-e888c2f8005d Killing Ubuntu18 by psutil
+2020-04-27 17:51:42.811973 b20bf0f8-202c-40cc-9268-e888c2f8005d Ubuntu18 Status State: aborted (since 2020-04-27T17:47:46.000000000)
+2020-04-27 17:51:42.906232 b20bf0f8-202c-40cc-9268-e888c2f8005d Restoring completed Ubuntu18
+2020-04-27 17:51:50.434324 b20bf0f8-202c-40cc-9268-e888c2f8005d Action uuid ac4c8de7-eb68-4d21-bb85-8a0536f4047e type enablenetwork returned True
+2020-04-27 17:51:51.449363 b20bf0f8-202c-40cc-9268-e888c2f8005d Action uuid ed7797eb-320b-4ed7-acee-31c605d9325f type run returned True
+2020-04-27 17:52:07.490968 b20bf0f8-202c-40cc-9268-e888c2f8005d Action uuid 983086a9-5360-4f97-9ab7-e227ae70f8f7 type wait returned True
+2020-04-27 17:52:12.804395 b20bf0f8-202c-40cc-9268-e888c2f8005d custom_task finished successfully
+2020-04-27 17:52:12.810498 b20bf0f8-202c-40cc-9268-e888c2f8005d Killing Ubuntu18 by vboxmanage
+2020-04-27 17:52:12.970183 b20bf0f8-202c-40cc-9268-e888c2f8005d Killing Ubuntu18 by psutil
+2020-04-27 17:52:13.002222 b20bf0f8-202c-40cc-9268-e888c2f8005d Killing Ubuntu18 by vboxmanage
+2020-04-27 17:52:13.103153 b20bf0f8-202c-40cc-9268-e888c2f8005d Killing Ubuntu18 by psutil

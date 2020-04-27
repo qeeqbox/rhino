@@ -1,0 +1,8 @@
+FROM node:alpine
+WORKDIR /website
+COPY ./website .
+RUN npm install
+RUN npm install @babel/compat-data@7.8.0
+RUN npm run build --production
+RUN npm install -g serve
+CMD serve -s build
