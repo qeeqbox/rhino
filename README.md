@@ -28,10 +28,10 @@ Agile Sandbox for analyzing malware and execution behaviors. Customizable, Expan
 - & More features to Explore
 
 ## Roadmap
-- &#9745; ~~Continue implementing the rest of actions (Currently there are 10 out of 65 actions implemented)~~
-- &#9745; ~~Add import settings to the web interface~~
-- &#9745; ~~Add multi-submit tasks~~
-- &#9745; ~~Refactor the web interface~~
+- Continue implementing the rest of actions (Currently there are 10 out of 65 actions implemented)
+- Add import settings to the web interface
+- dd multi-submit tasks
+- Refactor the web interface
 
 ## Running
 
