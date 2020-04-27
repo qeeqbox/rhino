@@ -9,7 +9,8 @@ Agile Sandbox for analyzing malware and execution behaviors. Customizable, Expan
 <img src="https://raw.githubusercontent.com/qeeqbox/rhino/master/readme/introv.gif" style="max-width:768px"/>
 
 ## Output 
-- Cerber Ransomwere
+- [Cerber Ransomwere Windows](https://github.com/qeeqbox/Rhino/tree/master/example/cerber-output-windows)
+- [Firefox Link Linux](https://github.com/qeeqbox/Rhino/tree/master/example/firefox-linux)
 
 ## General Features
 - Customizable actions and settings
