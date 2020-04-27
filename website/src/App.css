@@ -1,0 +1,88 @@
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+}
+
+*:focus, input:focus, select:focus, textarea:focus{
+  outline: none;
+}
+
+
+body,html,#root {
+  min-height: 100%;
+  min-width: 100%;
+  height: 100%;
+  width: 100%;
+  background-color: #E6E6E6;
+  cursor: default !important;
+  overflow-x: hidden;
+}
+
+.video-react,.video-react.video-react-fluid {
+  background-color: transparent;
+}
+
+button {
+  white-space:  nowrap;
+}
+
+* {
+  font-size: 12px !important;
+  font-family: monospace;
+}
+
+input[type="file"] {
+  opacity: 0;
+  position: absolute;
+}
+
+.checkbox {
+  display: inline-flex;
+  cursor: pointer;
+  position: relative;
+  align-items: center;
+}
+
+.checkbox > input {
+  height: 17px;
+  width: 17px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  border: 1px solid #b1b5b8;
+  outline: none;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+.checkbox > span {
+  padding-left: 5px;
+}
+
+.checkbox > input:checked {
+  background-color: #b1b5b8;
+}
+
+a:focus, a:active, a:hover,
+select::-moz-focus-inner,
+button::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+input[type="file"] > input[type="button"]::-moz-focus-inner {
+    border: 0;
+    outline : 0;
+}
+
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #444444;
+}
+
+.pretty-json-container{
+  overflow-wrap: anywhere;
+}
