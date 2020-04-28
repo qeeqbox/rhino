@@ -418,7 +418,6 @@ def analyze_input_wrapper_in_process(uuid,box,task,actions_list,process_wait_tim
                 ret = True
             else:
                 log_string(uuid,"custom_task finished with errors, exit code False","Red")
-        kill_vm(uuid,box["vm"])
     return ret
 
 def remote_control_vm(uuid,box):
@@ -443,7 +442,6 @@ def remote_control_vm_in_process(uuid,box,process_wait_time):
                 ret = True
             else:
                 log_string(uuid,"remote_control_vm finished with errors, exit code False","Red")
-        kill_vm(uuid,box["vm"])
     return ret
 
 def test_task(uuid,box):
