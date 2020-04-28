@@ -29,8 +29,8 @@ Agile Sandbox for analyzing malware and execution behaviors. Customizable, Expan
 - & More features to Explore
 
 ## Roadmap
+- Add edit and import settings to the web interface 
 - Continue implementing the rest of actions (Currently there are 10 out of 65 actions implemented)
-- Add import settings to the web interface
 - dd multi-submit tasks
 - Refactor the web interface
 
