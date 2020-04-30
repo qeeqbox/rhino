@@ -6,15 +6,15 @@ from celery import Celery
 from flask_cors import CORS
 from datetime import datetime
 from redis import StrictRedis
-from json import loads
 from pymongo import MongoClient
 from gridfs import GridFS
 from pandas import DataFrame,to_datetime
 from json import dumps as jdumps
+from json import dump as jdump
 from json import loads as jloads
+from json import load as jload
 from pickle import dumps as pdumps
 from time import sleep
-from settings import celery_settings_docker,mongo_settings_docker, all_boxes, backendkey,vbox_testing
 from uuid import uuid4
 from ast import literal_eval
 from re import compile as recompile
@@ -23,8 +23,13 @@ from bcrypt import hashpw, gensalt
 from psutil import disk_usage
 from werkzeug.exceptions import HTTPException
 
-with open('settings.json') as f:
-	temp_settings_d = f.read()
+with open('/settings/settings.json') as f:
+    json_settings = jload(f)
+    all_boxes = json_settings["settings"]["all_boxes"]
+    vbox_testing = json_settings["settings"]["vbox_testing"]
+    mongo_settings_docker = json_settings["settings"]["mongo_settings_docker"]
+    celery_settings_docker = json_settings["settings"]["celery_settings_docker"]
+    backendkey = json_settings["settings"]["backendkey"]
 
 r = StrictRedis(host="redis", port=6379, db=0)
 client = MongoClient(mongo_settings_docker["url"])
@@ -137,7 +142,7 @@ def get_succeed():
 	try:
 		for key in r.scan_iter():
 			if key.startswith("celery-task-meta-"):
-				_key = loads(r[key])
+				_key = jloads(r[key])
 				if _key["status"] == "SUCCESS":
 					_list.append({"task_id":_key["task_id"],"date_done":datetime.strptime(_key["date_done"],"%Y-%m-%dT%H:%M:%S.%f")})
 
@@ -348,7 +353,14 @@ def get_vars(module_name):
 @app.route("/dump_settings",methods=["GET"])
 @require_session_token
 def dump_settings():
-	return jdumps(jloads(temp_settings_d), indent=4, default=str)
+	return jdumps(json_settings, indent=4, default=str)
+
+@app.route("/upload_settings",methods=["POST"])
+@require_session_token
+def upload_settings():
+	with open("/settings/settings.json_new", "w") as json_file:
+		jdump(request.json, json_file,indent=4, sort_keys=True)
+	return jsonify("Uploaded")
 
 @app.route("/boxes_list",methods=["GET"])
 @require_session_token
@@ -495,8 +507,8 @@ def add_header_no_cache(r):
 #	if auth != "UI076XJZo0pAMT2CN7DqJH3pybTnRU":
 #		return jsonify("Please Login") 
 
-def error_handler(error):
-	return jsonify(Error="Exception")
+#def error_handler(error):
+#	return jsonify(Error="Exception")
 
-for cls in HTTPException.__subclasses__():
-	app.register_error_handler(cls, error_handler)
+#for cls in HTTPException.__subclasses__():
+#	app.register_error_handler(cls, error_handler)

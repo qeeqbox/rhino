@@ -86,3 +86,13 @@ select:-moz-focusring {
 .pretty-json-container{
   overflow-wrap: anywhere;
 }
+
+.variable-editor{
+  resize: none !important;
+  background-color: rgb(255, 255, 255) !important;
+  border-color: currentcolor currentcolor rgb(177, 181, 184) !important;
+  border-style: none none solid !important;
+  border-width: medium medium 1px !important;
+  border-image: none 100% / 1 / 0 stretch !important;
+  padding: 0 !important;
+}

@@ -4,7 +4,7 @@ from termcolor import colored
 from subprocess import Popen
 from time import sleep
 from workers.processes.proc import kill_all_boxes, kill_processes
-from settings import all_boxes,redis_settings_localhost,vbox_testing
+from settings.settings import all_boxes,redis_settings_localhost,vbox_testing
 from redis import StrictRedis
 from tempfile import gettempdir
 from os import path, mkdir

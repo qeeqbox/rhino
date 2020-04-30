@@ -55,12 +55,12 @@ try:
 	print("\nAdding your settings to settings.json, you can manually edit all the settings later on\n")
 	print(dumps(_dict_of_boxes, indent=4, sort_keys=True))
 
-	with open("settings.json", "r") as json_file:
+	with open("settings/settings.json", "r") as json_file:
 		data = load(json_file)
 
 	data["settings"]["all_boxes"] = _dict_of_boxes
 
-	with open("settings.json", "w") as json_file:
+	with open("settings/settings.json", "w") as json_file:
 		dump(data, json_file,indent=4, sort_keys=True)
 
 	print("\nSettings have been added to settings.json\n")

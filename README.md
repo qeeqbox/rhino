@@ -29,22 +29,31 @@ Agile Sandbox for analyzing malware and execution behaviors. Customizable, Expan
 - & More features to Explore
 
 ## Roadmap
-- Add edit and import settings to the web interface 
 - Continue implementing the rest of actions (Currently there are 10 out of 65 actions implemented)
+- Add import settings to the web interface
 - dd multi-submit tasks
 - Refactor the web interface
 
 ## Running
 
-#### On ubuntu 18 or 19 System 
+#### On ubuntu 18 or 19 System (You have to enter VMs settings)
 ```bash
-1) Make run.sh executable | chmod +x ./run.sh
-2) Setup the project | ./run.sh setup
-3) Import your VMs to the system
-4) Snapshot your running Linux or Windows VM
-5) initialize the project | ./run.sh init
-6) Start the project | ./run.sh start
+chmod +x ./run.sh
+./run.sh setup
+./run.sh init
+./run.sh start
+Go to 127.0.0.1:5000/
 ```
+
+#### On ubuntu 18 or 19 System (dummy VMs settings for testing)
+```bash
+chmod +x ./run.sh
+./run.sh setup
+./run.sh init dummy
+./run.sh start
+Go to 127.0.0.1:5000/
+```
+
 
 ## Resources
 - Linux documentation
@@ -52,6 +61,7 @@ Agile Sandbox for analyzing malware and execution behaviors. Customizable, Expan
 - VirtualBox SDK
 - pyvbox and VirtualBox APIs
 - ionicons
+- llorentegerman
 - My old projects
 - Please let me know if i missed a resource or dependency
 

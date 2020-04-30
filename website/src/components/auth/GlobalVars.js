@@ -14,6 +14,7 @@ export const backendurls = {
     checktask:"http://127.0.0.1:5001/check",
     remoteaction:"http://127.0.0.1:5001/remote_action",
     stats:"http://127.0.0.1:5001/stats",
+    uploadsettings:"http://127.0.0.1:5001/upload_settings",
     results:"http://127.0.0.1:5001/results",
     addtask:"http://127.0.0.1:5001/add",
     addmalware:"http://127.0.0.1:5001/upload_malware/",
