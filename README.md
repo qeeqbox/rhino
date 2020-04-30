@@ -38,6 +38,8 @@ Agile Sandbox for analyzing malware and execution behaviors. Customizable, Expan
 
 #### On ubuntu 18 or 19 System (You have to enter VMs settings)
 ```bash
+git clone https://github.com/qeeqbox/Rhino.git
+cd Rhino
 chmod +x ./run.sh
 ./run.sh setup
 ./run.sh init
@@ -47,6 +49,8 @@ Go to 127.0.0.1:5000/
 
 #### On ubuntu 18 or 19 System (dummy VMs settings for testing)
 ```bash
+git clone https://github.com/qeeqbox/Rhino.git
+cd Rhino
 chmod +x ./run.sh
 ./run.sh setup
 ./run.sh init dummy
