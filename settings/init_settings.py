@@ -1,6 +1,5 @@
 __G__ = "(G)bd249ce4"
 
-from termcolor import colored
 from tempfile import gettempdir
 from re import sub, compile,I
 from os import path, mkdir
@@ -26,17 +25,17 @@ try:
 			]
 		  }
 
-	reg = compile(r"[^A-Za-z0-9\s!?]",I)
+	reg = compile(r"[^A-Za-z0-9\!\@\#\-\_ ]",I)
 	temp_location = path.join(gettempdir(),"rhinotempfiles")
 	if not path.exists(temp_location):
 		mkdir(path.join(gettempdir(),"rhinotempfiles"))
-	print(colored("\nAdding virtual boxes settings (Allowed characters are: A-Z a-z 0-9 and _!@#)\n"))
+	print("\nAdding virtual boxes settings (Allowed characters are: A-Z a-z 0-9_-!@#)\n")
 	n_boxes = raw_input("How many VMs do you have? ")
 	temp_location = raw_input("Default temporary folder is {} -> ".format(temp_location)) or temp_location
 	_dict_of_boxes = {}
 	for x in range(0,int(n_boxes)):
 		name = "vbox_{}".format(x)
-		print(colored("\n----------{}----------\n".format(name)))
+		print("\n----------{}----------\n".format(name))
 		temp_vbox_template = vbox_template
 		temp_vbox_template["vm"] = sub(reg, "", raw_input("VM name? (E.g. Ubuntu18, TestUbuntu or Windows10) "))
 		temp_vbox_template["snapshot"] = sub(reg, "", raw_input("VM snapshot name? (E.g. Snapshot_1) "))
@@ -48,7 +47,7 @@ try:
 
 		for key in temp_vbox_template:
 			if temp_vbox_template[key] == "":
-				print(colored("{} is Empty {}".format(key,temp_vbox_template[key]),"red"))
+				print("{} is Empty {}".format(key,temp_vbox_template[key]))
 				exit()
 		_dict_of_boxes[name] = temp_vbox_template
 
@@ -66,4 +65,4 @@ try:
 	print("\nSettings have been added to settings.json\n")
 
 except Exception as e:
-	print(colored("Something wrong","red"))
+	print(e)

@@ -26,6 +26,7 @@ Agile Sandbox for analyzing malware and execution behaviors. Customizable, Expan
 - Setup, Initialize and Run the project using a Bash script
 - Project expands dynamically based on VM entries
 - Custom Remote control (Experimental, used to snapshot VMs)
+- Auto VMs mapping and switching
 - & More features to Explore
 
 ## Roadmap
@@ -34,30 +35,24 @@ Agile Sandbox for analyzing malware and execution behaviors. Customizable, Expan
 - dd multi-submit tasks
 - Refactor the web interface
 
-## Running
+## Easy installation!
+<img src="https://raw.githubusercontent.com/qeeqbox/rhino/master/readme/install.gif" style="max-width:768px"/>
 
 #### On ubuntu 18 or 19 System (You have to enter VMs settings)
 ```bash
 git clone https://github.com/qeeqbox/Rhino.git
 cd Rhino
 chmod +x ./run.sh
-./run.sh setup
-./run.sh init
-./run.sh start
-Go to 127.0.0.1:5000/
-```
+./run.sh
 
-#### On ubuntu 18 or 19 System (dummy VMs settings for testing)
-```bash
-git clone https://github.com/qeeqbox/Rhino.git
-cd Rhino
-chmod +x ./run.sh
-./run.sh setup
-./run.sh init dummy
-./run.sh start
-Go to 127.0.0.1:5000/
+Choose an option:
+1) Setup requirements (docker, docker-compose and VirtualBox)
+2) Initialize your VMs settings (VM name, snapshot, username and password)
+3) Initialize dummy VMs settings (VM name, snapshot, username and password are dummy)
+4) Setup the project
+5) Start the proejct
+6) Exit the project and restore VMs on local
 ```
-
 
 ## Resources
 - Linux documentation

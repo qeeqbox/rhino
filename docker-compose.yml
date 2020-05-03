@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 services:
   backend_api:
     build:
@@ -16,6 +16,24 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - ./settings:/settings
+
+  workers_api:
+    build:
+      context: .
+      dockerfile: ./backend-workers-Dockerfile
+    restart: always
+    privileged: true
+    depends_on:
+      - redis
+      - mongodb
+    networks:
+      - backend
+      - frontend
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./settings:/settings
+      - ${SRCVBFOLDER}:${DSTVBFOLDER}
 
   frontend_website:
     build:

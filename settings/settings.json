@@ -1,6 +1,24 @@
 {
     "settings": {
         "all_boxes": {
+            "vbox_0": {
+                "logs": "analyzer_logs", 
+                "os": "Windows", 
+                "pass": "Passw0rd!", 
+                "queue": "vbox_0", 
+                "reserved": [
+                    "screen.webm", 
+                    "analyzer_logs", 
+                    "screen.png"
+                ], 
+                "screen_recorder": "screen.webm", 
+                "screenshot": "screen.png", 
+                "snapshot": "Snapshot_1", 
+                "task_time_limit": 250, 
+                "temp": "/tmp/rhinotempfiles", 
+                "user": "IEUser", 
+                "vm": "MSEdge-Win10"
+            }
         }, 
         "backendkey": "w9AMMSqmKo4gFfEJs!Ghy4cRbE]xiynWKJhoUN(I1IfsOpJ0Z1KypuXhfH(lQQqQ92pvDobAsBCMoc^3M,0EzuO2wGk9fzhO0aWpkzSA7WXf.kDKafLpevawhfxJa3I#OJmlCNJE9Fa107A!g1s", 
         "celery_settings_docker": {
@@ -21,9 +39,7 @@
             "users_col_settings": "settings", 
             "users_db": "users", 
             "worker_col_logs": "logs", 
-            "worker_db": "worker",
-            "settings_col":"settings",
-            "settings_db":"project"
+            "worker_db": "worker"
         }, 
         "mongo_settings_localhost": {
             "files": "results", 
@@ -33,9 +49,7 @@
             "users_col_settings": "settings", 
             "users_db": "users", 
             "worker_col_logs": "logs", 
-            "worker_db": "worker",
-            "settings_col":"settings",
-            "settings_db":"project"
+            "worker_db": "worker"
         }, 
         "redis_settings_docker": {
             "host": "redis", 

@@ -313,7 +313,7 @@ def custom_task(uuid,box,actions_list):
 def vbox_remote_control(uuid,box):
     ret = False
     try:
-        queue = StrictRedis(host="localhost", port=6379, db=0)
+        queue = StrictRedis(redis_settings_localhost["host"], redis_settings_localhost["port"], db=0)
         virtual_machine = VirtualBox().find_machine(box["vm"])
         vm_name_lock = "{}_lock".format(box["vm"])
         vm_name_frame = "{}_frame".format(box["vm"])
