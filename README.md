@@ -44,6 +44,8 @@ git clone https://github.com/qeeqbox/Rhino.git
 cd Rhino
 chmod +x ./run.sh
 ./run.sh auto_configure
+
+open localhost:5000/dashboard
 ```
 
 #### On ubuntu 18 or 19 System (Auto-configure Dummy)
@@ -52,6 +54,8 @@ git clone https://github.com/qeeqbox/Rhino.git
 cd Rhino
 chmod +x ./run.sh
 ./run.sh auto_configure_dummy
+
+open dashboard localhost:5000/dashboard
 ```
 
 #### On ubuntu 18 or 19 System (Manually)
@@ -71,6 +75,7 @@ Choose an option:
 9) Auto-configure dummy project
 
 Choose 1,2,4 then 5. Once you are done, close the project with ctr+c
+open localhost:5000/dashboard
 ```
 
 ## Resources
