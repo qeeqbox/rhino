@@ -107,6 +107,7 @@ def find_items(db,col,_set,last=None):
 def add_task():
 	uuid4_cluster = str(uuid4())
 	if request.json["singleormulti"] == "single":
+		if all_boxes[request.json["vbox"]]["queue"] != "vbox_testing":
 			task = celery.send_task("{}_tasks".format(request.json["vbox"]), args=[request.json["vbox"],request.json["taskname"],request.json["actionslist"],int(request.json["tasktimeout"])], kwargs={}, queue=all_boxes[request.json["vbox"]]["queue"])
 			if task.id:
 				add_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],{"cluster":uuid4_cluster,"uuid":task.id,"status":"added","logs":[],"box":request.json["vbox"],"task":request.json["taskname"],"tasktimeout":int(request.json["tasktimeout"]),"actionslist":request.json["actionslist"],"added_time":datetime.now(),"started_time":None,"done_time":None,"fileslist":[]})
@@ -377,7 +378,17 @@ def terminate_box():
 	if task.id:
 		add_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],{"uuid":task.id,"task":"terminate","status":"added","logs":[],"box":request.json["vbox"],"added_time":datetime.now(),"started_time":None,"done_time":None})
 		_item = find_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],{"uuid":task.id})
-		return jdumps(_item, indent=4, default=str)
+		return jsonify(task_id=task.id)
+	return jsonify(status="Error")
+
+@app.route("/test_dummy",methods=["POST"])
+@require_session_token
+def test_dummy():
+	task = celery.send_task("vbox_testing", args=[request.json["vbox"],"testdummy"], kwargs={}, queue=vbox_testing["queue"])
+	if task.id:
+		add_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],{"uuid":task.id,"task":"testdummy","status":"added","logs":[],"box":request.json["vbox"],"added_time":datetime.now(),"started_time":None,"done_time":None})
+		_item = find_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],{"uuid":task.id})
+		return jsonify(task_id=task.id)
 	return jsonify(status="Error")
 
 @app.route("/actions_list/<uuid>",methods=["GET"])
@@ -507,8 +518,8 @@ def add_header_no_cache(r):
 #	if auth != "UI076XJZo0pAMT2CN7DqJH3pybTnRU":
 #		return jsonify("Please Login") 
 
-#def error_handler(error):
-#	return jsonify(Error="Exception")
+def error_handler(error):
+	return jsonify(Error="Exception")
 
-#for cls in HTTPException.__subclasses__():
-#	app.register_error_handler(cls, error_handler)
+for cls in HTTPException.__subclasses__():
+	app.register_error_handler(cls, error_handler)

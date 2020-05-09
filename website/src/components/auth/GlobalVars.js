@@ -23,4 +23,5 @@ export const backendurls = {
     register:"http://127.0.0.1:5001/register",
     boxeslist:"http://127.0.0.1:5001/boxes_list",
     terminatebox:"http://127.0.0.1:5001/terminate_box",
+    testdummy:"http://127.0.0.1:5001/test_dummy",
 }

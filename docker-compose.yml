@@ -71,8 +71,6 @@ services:
         driver: none #no logging 
     ports:
      - "27017:27017"
-    logging:
-        driver: none #no logging 
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro

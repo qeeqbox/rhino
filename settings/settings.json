@@ -1,11 +1,11 @@
 {
     "settings": {
         "all_boxes": {
-            "vbox_0": {
+            "vbox_1": {
                 "logs": "analyzer_logs", 
-                "os": "Windows", 
-                "pass": "Passw0rd!", 
-                "queue": "vbox_0", 
+                "os": "dummy", 
+                "pass": "dummy", 
+                "queue": "vbox_testing", 
                 "reserved": [
                     "screen.webm", 
                     "analyzer_logs", 
@@ -13,11 +13,11 @@
                 ], 
                 "screen_recorder": "screen.webm", 
                 "screenshot": "screen.png", 
-                "snapshot": "Snapshot_1", 
+                "snapshot": "dummy", 
                 "task_time_limit": 250, 
                 "temp": "/tmp/rhinotempfiles", 
-                "user": "IEUser", 
-                "vm": "MSEdge-Win10"
+                "user": "dummy", 
+                "vm": "dummy"
             }
         }, 
         "backendkey": "w9AMMSqmKo4gFfEJs!Ghy4cRbE]xiynWKJhoUN(I1IfsOpJ0Z1KypuXhfH(lQQqQ92pvDobAsBCMoc^3M,0EzuO2wGk9fzhO0aWpkzSA7WXf.kDKafLpevawhfxJa3I#OJmlCNJE9Fa107A!g1s", 
@@ -34,6 +34,8 @@
         "mongo_settings_docker": {
             "files": "results", 
             "malware": "malware", 
+            "settings_col": "settings", 
+            "settings_db": "project", 
             "url": "mongodb://mongodb:27017/", 
             "users_col_login": "auth", 
             "users_col_settings": "settings", 
@@ -44,6 +46,8 @@
         "mongo_settings_localhost": {
             "files": "results", 
             "malware": "malware", 
+            "settings_col": "settings", 
+            "settings_db": "project", 
             "url": "mongodb://localhost:27017/", 
             "users_col_login": "auth", 
             "users_col_settings": "settings", 

@@ -11,6 +11,7 @@ import ResultsSearch from './components/main/ResultsSearch.js'
 import LiveRemoteControl from './components/main/LiveRemoteControl.js'
 import GlobalSettings from './components/main/GlobalSettings.js'
 import TerminateSettings from './components/main/TerminateSettings.js'
+import TesteSettings from './components/main/TestSettings.js'
 
 const styles = StyleSheet.create({
   container: {
@@ -79,7 +80,8 @@ class App extends React.Component {
                 Stats_Search: (<ResultsSearch />),
                 Live_Remote_Control: (<LiveRemoteControl />),
                 Settings_Global: (<GlobalSettings />),
-                Settings_Terminate: (<TerminateSettings />)
+                Settings_Terminate: (<TerminateSettings />),
+                Settings_Test: (<TesteSettings />)
               }[this.state.selecteditem]}
             </>
           </Row>

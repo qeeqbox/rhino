@@ -6,7 +6,7 @@ from shutil import rmtree
 from datetime import datetime
 from types import FunctionType
 from .logger.logger import log_string,setup_logger
-from .modules.vbox_parser import analyze_input_wrapper_in_process,remote_control_vm_in_process,test_vbox,turn_off
+from .modules.vbox_parser import analyze_input_wrapper_in_process,remote_control_vm_in_process,test_vbox,turn_off,test_dummy_in_process
 from .modules.dump_results import dump_to_mongofs
 from .settings import all_boxes,celery_settings_localhost,mongo_settings_localhost,vbox_testing
 from .connections.mongodbconn import update_item
@@ -41,6 +41,10 @@ def vbox_testing(self,vbox_name,task):
 	try:
 		if task == "terminate":
 			if turn_off(uuid,all_boxes[vbox_name],5):
+				update_item(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],uuid,{"status":"done","done_time":datetime.now()})
+				ret = "done"
+		elif task == "testdummy":
+			if test_dummy_in_process(uuid,all_boxes[vbox_name],25):
 				update_item(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],uuid,{"status":"done","done_time":datetime.now()})
 				ret = "done"
 	except:

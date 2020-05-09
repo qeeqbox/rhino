@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update -y && apt-get install -y wget gnupg2 lsb-release p7zip-full
+RUN apt-get update -y && apt-get install -y wget gnupg2 lsb-release p7zip-full jq
 RUN wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add - && \
 	wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | apt-key add - && \
 	echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" | tee /etc/apt/sources.list.d/virtualbox.list && \

@@ -32,13 +32,29 @@ Agile Sandbox for analyzing malware and execution behaviors. Customizable, Expan
 ## Roadmap
 - Continue implementing the rest of actions (Currently there are 10 out of 65 actions implemented)
 - Add import settings to the web interface
-- Add multi-submit tasks
+- dd multi-submit tasks
 - Refactor the web interface
 
 ## Easy installation!
 <img src="https://raw.githubusercontent.com/qeeqbox/rhino/master/readme/install.gif" style="max-width:768px"/>
 
-#### On ubuntu 18 or 19 System (You have to enter VMs settings)
+#### On ubuntu 18 or 19 System (Auto-configure)
+```bash
+git clone https://github.com/qeeqbox/Rhino.git
+cd Rhino
+chmod +x ./run.sh
+./run.sh auto_configure
+```
+
+#### On ubuntu 18 or 19 System (Auto-configure Dummy)
+```bash
+git clone https://github.com/qeeqbox/Rhino.git
+cd Rhino
+chmod +x ./run.sh
+./run.sh auto_configure_dummy
+```
+
+#### On ubuntu 18 or 19 System (Manually)
 ```bash
 git clone https://github.com/qeeqbox/Rhino.git
 cd Rhino
@@ -50,8 +66,11 @@ Choose an option:
 2) Initialize your VMs settings (VM name, snapshot, username and password)
 3) Initialize dummy VMs settings (VM name, snapshot, username and password are dummy)
 4) Setup the project
-5) Start the proejct
+5) Start the project 
 6) Exit the project and restore VMs on local
+9) Auto-configure dummy project
+
+Choose 1,2,4 then 5. Once you are done, close the project with ctr+c
 ```
 
 ## Resources

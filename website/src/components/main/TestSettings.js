@@ -99,8 +99,8 @@ export default class ProcessTask extends React.Component {
   clickhandle = async (event) => {
     try {
       var stop = false;
-      await this.setstateasync({ flashmessage: { onoff: true, random: uuidv4(), msg: "Terminating..", spinner: true } })
-      const rettaskid = await sendpostajaxrequest(backendurls.terminatebox, JSON.stringify({ vbox: this.state.vbox }), {});
+      await this.setstateasync({ flashmessage: { onoff: true, random: uuidv4(), msg: "Testing..", spinner: true } })
+      const rettaskid = await sendpostajaxrequest(backendurls.testdummy, JSON.stringify({ vbox: this.state.vbox }), {});
       if (rettaskid.task_id !== 0 && rettaskid.task_id) {
         await this.setstateasync({ task_id: rettaskid.task_id })
         while (!stop) {
@@ -154,7 +154,7 @@ export default class ProcessTask extends React.Component {
           </Column>
           <Column flexGrow={1} className={css(styles.separatorwidth)}> </Column>
           <Column>
-            <button className={css(styles.custombutton)} onClick={this.clickhandle} >Terminate</button>
+            <button className={css(styles.custombutton)} onClick={this.clickhandle} >Test</button>
           </Column>
         </Row>
         <Row className={css(styles.separatorheight)}> </Row>

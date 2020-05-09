@@ -3,27 +3,31 @@
 SRCVBFOLDER="/home/test/VirtualBox VMs"
 DSTVBFOLDER="/root/VirtualBox VMs"
 
-BLACK=`tput setaf 0`
-RED=`tput setaf 1`
-GREEN=`tput setaf 2`
-YELLOW=`tput setaf 3`
-BLUE=`tput setaf 4`
-MAGENTA=`tput setaf 5`
-CYAN=`tput setaf 6`
-WHITE=`tput setaf 7`
+BLACK='\033[0;30m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
+WHITE='\033[0;37m'
 
-BBLACK=`tput setab 0`
-BRED=`tput setab 1`
-BGREEN=`tput setab 2`
-BYELLOW=`tput setab 3`
-BBLUE=`tput setab 4`
-BMAGENTA=`tput setab 5`
-BCYAN=`tput setab 6`
-BWHITE=`tput setab 7`
+BBLACK='\033[40m'
+BRED='\033[41m'
+BGREEN='\033[42m'
+BYELLOW='\033[43m'
+BBLUE='\033[44m'
+BPURPLE='\033[45m'
+BCYAN='\033[46m'
+BWHITE='\033[47m'
 
-RESET=`tput sgr0`
+RESET='\033[0m'
 
 echo -e "\nQeeqBox Rhino starter script\nhttps://github.com/qeeqbox/Rhino\n"
+
+echo -e "{Pre-configuration}"
+echo "Source VMs folder is: $SRCVBFOLDER"
+echo "Destination VMs folder is: $DSTVBFOLDER"
 
 setup_requirements () {
 	echo -e "\n${RED}${BBLACK}Setup requirements started${RESET}\n"
@@ -31,7 +35,7 @@ setup_requirements () {
 	wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
 	echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
 	sudo apt update -y
-	sudo apt install -y linux-headers-$(uname -r) dkms virtualbox-6.1 docker.io curl wget
+	sudo apt install -y linux-headers-$(uname -r) dkms virtualbox-6.1 docker.io curl wget jq
 	sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 	sudo chmod +x /usr/local/bin/docker-compose
 	echo ""
@@ -52,14 +56,13 @@ setup_project () {
 init () {
 	echo -e "\n${RED}${BBLACK}Init sequences started${RESET}\n"
 	echo -e "\nInit sequences started\n"
-  	python ./settings/init_settings.py 
+  	python ./settings/init_settings.py normal
 	echo -e "\n${RED}${BBLACK}Init sequences done${RESET}\n"
 }
 
 init_dummy () {
 	echo -e "\n${RED}${BBLACK}Dummy init sequences started${RESET}\n"
-  	rm -f ./settings/settings.json
-  	cp ./settings/settings.json_default ./settings/settings.json
+  	python ./settings/init_settings.py dummy
 	echo -e "\n${RED}${BBLACK}Dummy init sequences done${RESET}\n"
 }
 
@@ -76,8 +79,28 @@ start_project () {
 	if [ ! -z "$output" ] ; then 
 		sudo docker stop $output
 	fi
+	jq -r '.settings.all_boxes[].vm' settings/settings.json | while read -r line
+	do
+	  unregister_vms "$line"
+	done
 	sudo docker-compose up
 	echo -e "Start sequences done\n"
+	exit_func
+}
+
+unregister_vms() {
+	VBoxManage list vms | grep "\"$1\"" |grep -oP '\{\K[^}]+' | xargs -n 1 -I {} VBoxManage unregistervm {}
+}
+
+change_uuid_and_register()
+{
+	if [ -d "$1/$2" ] ; then
+		#echo "$1/$2 <-- Found" 
+		find "$1/$2" -type f -name "$2.vbox" | xargs -n 1 -I {} sh -c 'sed -i "s/<Machine uuid=\"{[^}]*}\"/<Machine uuid=\"{`uuidgen`}\"/g" "{}"'
+		find "$1/$2" -type f -name "$2.vbox" | xargs -n 1 -I {} VBoxManage registervm {}
+	#else
+	#	echo "$1/$2 <-- Not found" 
+	fi
 }
 
 exit_func (){
@@ -85,44 +108,58 @@ exit_func (){
 	sudo docker-compose down
 	find "$SRCVBFOLDER" -type f ! -user `id -un` -exec sudo chown -R $USER: {} +
 	find "$SRCVBFOLDER" -type d ! -user `id -un` -exec sudo chown -R $USER: {} +
-	VBoxManage list vms | grep -oP '\{\K[^}]+' | xargs -n 1 -I {} VBoxManage unregistervm {}
-	find "$SRCVBFOLDER" -name '*.backup' -exec bash -c 'cp "$0" "${0%.backup}.vbox"' "{}" \;
-	find "$SRCVBFOLDER" -type f -name *.vbox | xargs -n 1 -I {} sh -c 'sed -i "s/<Machine uuid=\"{[^}]*}\"/<Machine uuid=\"{`uuidgen`}\"/g" "{}"'
-	find "$SRCVBFOLDER" -type f -name *.vbox | xargs -n 1 -I {} VBoxManage registervm {}
+	#find "$SRCVBFOLDER" -name '*.backup' -exec bash -c 'cp "$0" "${0%.backup}.vbox"' "{}" \;
+	jq -r '.settings.all_boxes[].vm' settings/settings.json | while read -r line
+	do
+	  change_uuid_and_register "$SRCVBFOLDER" "$line"
+	done
 	sudo pkill -9 VBox && sudo killall VirtualBox && sudo killall VirtualBoxVM
 	echo -e "\n${RED}${BBLACK}exit sequences done${RESET}\n"
 	exit 1
 }
 
-enter_func (){
+enter_func_workers (){
 	echo -e "\n${RED}${BBLACK}workers sequences started${RESET}\n"
-	#VBoxManage list vms | grep -oP '\{\K[^}]+' | xargs -n 1 -I {} VBoxManage unregistervm {}
-	#find "$DSTVBFOLDER" -name '*.backup' -exec bash -c 'cp "$0" "${0%.backup}.vbox"' "{}" \;
-	#find "$DSTVBFOLDER" -type f -name *.vbox | xargs -n 1 -I {} sh -c 'sed -i "s/<Machine uuid=\"{[^}]*}\"/<Machine uuid=\"{`uuidgen`}\"/g" "{}"'
-	find "$DSTVBFOLDER" -type f -name *.vbox | xargs -n 1 -I {} VBoxManage registervm {}
-	pkill -9 VBox && killall VirtualBox && killall VirtualBoxVM
+	jq -r '.settings.all_boxes[].vm' /settings/settings.json | while read -r line
+	do
+	  unregister_vms "$line"
+	  change_uuid_and_register "$DSTVBFOLDER" "$line"
+	done
+	sudo pkill -9 VBox && sudo killall VirtualBox && sudo killall VirtualBoxVM
 	python start.py
 	echo -e "\n${RED}${BBLACK}workers sequences done${RESET}\n"
 	exit 1
 }
 
-if [[ "$1" == "workers" ]]; then
-	echo "{Workers mode}"
-    enter_func
-fi
-
-echo -e "{Pre-configuration}"
-echo "Source VMs folder is: $SRCVBFOLDER"
-echo "Destination VMs folder is: $DSTVBFOLDER"
-echo -e "\n\e[9m{Auto configuration}\e[0m"
-echo -e "\e[9m- Local dummy: this option will be added next update\e[0m"
-echo -e "\e[9m- Remote dummy: this option will be added next update\e[0m"
 
 if [ -d "$SRCVBFOLDER" ]; then
 	find "$SRCVBFOLDER" -name '*.vbox' -exec bash -c 'cp "$0" "${0%.vbox}.backup"' "{}" \;
 fi
 
-while read -p "`echo -e '\nChoose an option:\n1) Setup requirements (docker, docker-compose and VirtualBox)\n2) Initialize your VMs settings (VM name, snapshot, username and password)\n3) Initialize dummy VMs settings (VM name, snapshot, username and password are dummy)\n4) Setup the project\n5) Start the proejct\n6) Exit the project and restore VMs on local\n>> '`"; do
+auto_configure_dummy() {
+	setup_requirements
+	init_dummy
+	setup_project
+	start_project
+}
+
+auto_configure() {
+	setup_requirements
+	init
+	setup_project
+	start_project
+}
+
+if [[ "$1" == "workers" ]]; then
+	echo "{Workers mode}"
+    enter_func_workers
+elif [[ "$1" == "auto_configure_dummy" ]]; then
+	auto_configure_dummy
+elif [[ "$1" == "auto_configure" ]]; then
+	auto_configure
+fi
+
+while read -p "`echo -e '\nChoose an option:\n1) Setup requirements (docker, docker-compose and VirtualBox)\n2) Initialize your VMs settings (VM name, snapshot, username and password)\n3) Initialize dummy VMs settings (VM name, snapshot, username and password are dummy)\n4) Setup the project\n5) Start the proejct (Remember to close the project with ctrl + c)\n6) Manually exit the project and restore VMs on local\n9) Auto-configure dummy project\n>> '`"; do
   case $REPLY in
     "1") setup_requirements;;
     "2") init;;
@@ -130,8 +167,8 @@ while read -p "`echo -e '\nChoose an option:\n1) Setup requirements (docker, doc
     "4") setup_project;;
     "5") start_project;;
     "6") exit_func;;
+    "exit") exit_func;;
+    "9") auto_configure;;
     *) echo "Invalid option";;
   esac
 done
-
-sudo find $HOME \! -user $USER
