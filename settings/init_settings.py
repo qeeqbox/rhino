@@ -26,7 +26,7 @@ try:
 			]
 		  }
 
-	reg = compile(r"[^A-Za-z0-9\!\@\#\-\_\/]",I)
+	reg = compile(r"[^A-Za-z0-9\!\@\#\-\_\/\.]",I)
 	temp_location = sub(reg, "", path.join(gettempdir(),"rhinotempfiles"))
 	print("\nAdding virtual boxes settings (Allowed characters are: A-Z a-z 0-9_-!@#)\n")
 	if argv[1] != "dummy":
