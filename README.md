@@ -117,6 +117,3 @@ By using this framework, you are accepting the license terms of each package lis
 - https://www.npmjs.com/package/axios
 - https://www.npmjs.com/package/aphrodite
 - https://github.com/ionic-team/ionicons/blob/master/LICENSE
-
-## Disclaimer\Notes
-- If you are interested in adopting some features in your project - please mention this source somewhere in your project
