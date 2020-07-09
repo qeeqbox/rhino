@@ -44,9 +44,8 @@ git clone https://github.com/qeeqbox/Rhino.git
 cd Rhino
 chmod +x ./run.sh
 ./run.sh auto_configure
-
-The project interface localhost:5000/dashboard will open automatically after finishing the initialization process
 ```
+The project interface http://localhost:5000/dashboard will open automatically after finishing the initialization process
 
 #### On ubuntu 18 or 19 System (Auto-configure Dummy)
 ```bash
@@ -54,9 +53,8 @@ git clone https://github.com/qeeqbox/Rhino.git
 cd Rhino
 chmod +x ./run.sh
 ./run.sh auto_configure_dummy
-
-The project interface dashboard localhost:5000/dashboard will open automatically after finishing the initialization process
 ```
+The project interface http://localhost:5000/dashboard will open automatically after finishing the initialization process
 
 #### On ubuntu 18 or 19 System (Manually)
 ```bash
