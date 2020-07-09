@@ -5,10 +5,13 @@ RUN wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-k
 	wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | apt-key add - && \
 	echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" | tee /etc/apt/sources.list.d/virtualbox.list && \
 	apt-get update -y && \
-	apt install -y linux-headers-$(uname -r) dkms virtualbox-6.1 uuid-runtime
+	apt install -y linux-headers-$(uname -r) dkms uuid-runtime curl && \
+	curl https://download.virtualbox.org/virtualbox/6.1.10/virtualbox-6.1_6.1.10-138449~Ubuntu~bionic_amd64.deb --output vbox.deb && \
+	apt install -y ./vbox.deb
 RUN apt-get install -y python2.7 python-pip python-celery python-celery-common
 RUN pip install redis==2.10.6
-RUN pip install pymongo termcolor psutil celery virtualbox python-magic
+RUN pip install virtualbox==2.0.0
+RUN pip install pymongo termcolor psutil celery python-magic
 COPY ./workers /workers
 COPY .env /workers
 COPY run.sh /workers

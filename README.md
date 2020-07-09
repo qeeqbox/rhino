@@ -45,7 +45,7 @@ cd Rhino
 chmod +x ./run.sh
 ./run.sh auto_configure
 
-open localhost:5000/dashboard
+The project interface dashboard localhost:5000/dashboard will open automatically after finishing the initialization process
 ```
 
 #### On ubuntu 18 or 19 System (Auto-configure Dummy)
@@ -55,7 +55,7 @@ cd Rhino
 chmod +x ./run.sh
 ./run.sh auto_configure_dummy
 
-open dashboard localhost:5000/dashboard
+The project interface dashboard localhost:5000/dashboard will open automatically after finishing the initialization process
 ```
 
 #### On ubuntu 18 or 19 System (Manually)

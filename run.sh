@@ -35,7 +35,7 @@ setup_requirements () {
 	wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
 	echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
 	sudo apt update -y
-	sudo apt install -y linux-headers-$(uname -r) dkms virtualbox-6.1 docker.io curl wget jq
+	sudo apt install -y linux-headers-$(uname -r) dkms virtualbox-6.1 docker.io curl wget jq xdg-open
 	sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 	sudo chmod +x /usr/local/bin/docker-compose
 	echo ""
@@ -44,6 +44,16 @@ setup_requirements () {
 	which VBoxManage && echo "Good"
 	echo -e "\n${RED}${BBLACK}Setup requirements done${RESET}\n"
 	echo -e "${YELLOW}Now, import or setup your VMs with the preferred settings, then snapshot each one while it's running. You will need the VMs Name, Snapshot name, username and password of each VM later on.. ${RESET}\n"
+}
+
+wait_on_web_interface () {
+echo ''
+until $(curl --silent --head --fail http://localhost:5000/dashboard/ --output /dev/null); do
+echo -ne "\n\n[\033[47m\033[0;31mInitializing project in progress..\033[0m]\n\n"
+sleep 5
+done
+echo ''
+xdg-open http://localhost:5000/dashboard/
 }
 
 setup_project () {
@@ -67,7 +77,7 @@ init_dummy () {
 }
 
 start_project () {
-	echo -e "\n${RED}${BBLACK}start sequences started${RESET}\n"
+	echo -e "\n${RED}${BBLACK}start sequences started${RESET}\n" 
 	echo -e "${YELLOW}To end the Start sequences, press ctrl-c several times until all processes exit${RESET}\n"
 	if [ -f "settings/settings.json_new" ]; then
 	    echo -e "New settings.json file found! $FILE"
@@ -138,6 +148,7 @@ fi
 
 auto_configure_dummy() {
 	setup_requirements
+	wait_on_web_interface &
 	init_dummy
 	setup_project
 	start_project
@@ -145,6 +156,7 @@ auto_configure_dummy() {
 
 auto_configure() {
 	setup_requirements
+	wait_on_web_interface &
 	init
 	setup_project
 	start_project
