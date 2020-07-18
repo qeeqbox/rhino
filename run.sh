@@ -35,7 +35,7 @@ setup_requirements () {
 	wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
 	echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
 	sudo apt update -y
-	sudo apt install -y linux-headers-$(uname -r) dkms virtualbox-6.1 docker.io curl wget jq xdg-open
+	sudo apt install -y linux-headers-$(uname -r) dkms virtualbox-6.1 docker.io curl wget jq xdg-open curl
 	sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 	sudo chmod +x /usr/local/bin/docker-compose
 	echo ""
