@@ -8,7 +8,7 @@ from types import FunctionType
 from .logger.logger import log_string,setup_logger
 from .modules.vbox_parser import analyze_input_wrapper_in_process,remote_control_vm_in_process,test_vbox,turn_off,test_dummy_in_process
 from .modules.dump_results import dump_to_mongofs
-from .settings import all_boxes,celery_settings_localhost,mongo_settings_localhost,vbox_testing
+from .settings import all_boxes,celery_settings_localhost,mongo_settings_docker,vbox_testing
 from .connections.mongodbconn import update_item
 
 celery = Celery(celery_settings_localhost["name"], broker=celery_settings_localhost["celery_broker_url"], backend=celery_settings_localhost["celery_result_backend"])
@@ -32,7 +32,7 @@ def copy_func(function, name):
 def vbox_testing(self,vbox_name,task):
 	ret = "false"
 	uuid = self.request.id
-	update_item(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],uuid,{"status":"started","started_time":datetime.now()})
+	update_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],uuid,{"status":"started","started_time":datetime.now()})
 	folder = path.join(all_boxes[vbox_name]["temp"],uuid)
 	if path.exists(folder):
 		rmtree(folder)
@@ -41,21 +41,21 @@ def vbox_testing(self,vbox_name,task):
 	try:
 		if task == "terminate":
 			if turn_off(uuid,all_boxes[vbox_name],5):
-				update_item(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],uuid,{"status":"done","done_time":datetime.now()})
+				update_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],uuid,{"status":"done","done_time":datetime.now()})
 				ret = "done"
 		elif task == "testdummy":
 			if test_dummy_in_process(uuid,all_boxes[vbox_name],25):
-				update_item(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],uuid,{"status":"done","done_time":datetime.now()})
+				update_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],uuid,{"status":"done","done_time":datetime.now()})
 				ret = "done"
 	except:
 		pass
-	update_item(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],uuid,{"status":ret,"done_time":datetime.now()})
+	update_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],uuid,{"status":ret,"done_time":datetime.now()})
 	return ret
 
 def tasks_logic(self,vbox_name,task,actionslist,timeout):
 	ret = "false"
 	uuid = self.request.id
-	update_item(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],uuid,{"status":"started","started_time":datetime.now()})
+	update_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],uuid,{"status":"started","started_time":datetime.now()})
 	folder = path.join(all_boxes[vbox_name]["temp"],uuid)
 	if path.exists(folder):
 		rmtree(folder)
@@ -67,13 +67,13 @@ def tasks_logic(self,vbox_name,task,actionslist,timeout):
 				ret = "done"
 	except Exception as e:
 		turn_off(uuid,all_boxes[vbox_name],5)
-	update_item(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],uuid,{"status":ret,"done_time":datetime.now()})
+	update_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],uuid,{"status":ret,"done_time":datetime.now()})
 	return ret
 
 def tasks_recording(self,vbox_name,task,process_timeout):
 	ret = "false"
 	uuid = self.request.id
-	update_item(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],uuid,{"status":"started","started_time":datetime.now()})
+	update_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],uuid,{"status":"started","started_time":datetime.now()})
 	folder = path.join(all_boxes[vbox_name]["temp"],uuid)
 	if path.exists(folder):
 		rmtree(folder)
@@ -82,11 +82,11 @@ def tasks_recording(self,vbox_name,task,process_timeout):
 	try:
 		if task == "remote_control":
 			if remote_control_vm_in_process(uuid,all_boxes[vbox_name],process_timeout):
-				update_item(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],uuid,{"status":"done","done_time":datetime.now()})
+				update_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],uuid,{"status":"done","done_time":datetime.now()})
 				ret = "done"
 	except:
 		turn_off(uuid,all_boxes[vbox_name],5)
-	update_item(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],uuid,{"status":ret,"done_time":datetime.now()})
+	update_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],uuid,{"status":ret,"done_time":datetime.now()})
 	return ret
 
 def dynamic_init_tasks():

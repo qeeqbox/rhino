@@ -5,7 +5,7 @@ path.append("/usr/lib/virtualbox/")
 path.append("/usr/lib/virtualbox/sdk/bindings/xpcom/python/")
 from virtualbox import VirtualBox, Session
 from virtualbox.library import BitmapFormat, FileCopyFlag, MachineState, ProcessCreateFlag, SessionState
-from redis import StrictRedis
+from redis import Redis
 from billiard.context import Process
 from subprocess import Popen, PIPE
 from time import time, sleep
@@ -18,7 +18,7 @@ from ast import literal_eval
 from re import sub, compile,I,search
 from ..logger.logger import log_string
 from ..processes.proc import kill_a_box
-from ..settings import redis_settings_localhost,mongo_settings_localhost
+from ..settings import redis_settings_docker,mongo_settings_docker
 from ..connections.mongodbconn import update_item,find_set_update_item,get_item_fs
 
 #from ..tasks.tasks import custom_task
@@ -216,7 +216,7 @@ def restore_machine(uuid,box):
 def parse_actions(uuid,box,folder,session,gs,_list):
 	encoded_list = literal_eval(dumps(_list))
 	for action in encoded_list:
-		find_set_update_item(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],{"uuid":uuid,"actionslist.uuid":action["uuid"]},{"$set": {"actionslist.$.status":"started"}})
+		find_set_update_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],{"uuid":uuid,"actionslist.uuid":action["uuid"]},{"$set": {"actionslist.$.status":"started"}})
 		ret = False
 		process, stdout, stderr = None,None,None
 		try:
@@ -275,7 +275,7 @@ def parse_actions(uuid,box,folder,session,gs,_list):
 					ret = True
 			elif action["type"] == "uploadtovm":
 				if action["input"]["filepath"] != "" and action["input"]["filename"] != "" and action["input"]["filename"] not in box["reserved"]:
-					file = get_item_fs(mongo_settings_localhost["malware"],{"uuid":action["uuid"]})
+					file = get_item_fs(mongo_settings_docker["malware"],{"uuid":action["uuid"]})
 					with open(path.join(folder,action["input"]["filename"]), "wb") as f:
 						f.write(file)
 					progress = gs.file_copy_to_guest(path.join(folder,action["input"]["filename"]),action["input"]["filepath"], [FileCopyFlag(0)])
@@ -291,13 +291,13 @@ def parse_actions(uuid,box,folder,session,gs,_list):
 					ret = True
 			if "saveoutput" in action["input"]:
 				if action["input"]["saveoutput"] == "true":
-					find_set_update_item(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],{"uuid":uuid,"actionslist.uuid":action["uuid"]},{"$set": {"actionslist.$.output":stdout}})
+					find_set_update_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],{"uuid":uuid,"actionslist.uuid":action["uuid"]},{"$set": {"actionslist.$.output":stdout}})
 			log_string(uuid,"Action uuid {} type {} returned {}".format(action["uuid"],action["type"],ret),"Green")
 		except Exception as e:
 			log_string(uuid,"parse_actions failed on action uuid {} type {} returned {} exception {}".format(action["uuid"],action["type"],ret,e),"Red")
 
 		sleep(1)
-		find_set_update_item(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],{"uuid":uuid,"actionslist.uuid":action["uuid"]},{"$set": {"actionslist.$.status":ret}})
+		find_set_update_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],{"uuid":uuid,"actionslist.uuid":action["uuid"]},{"$set": {"actionslist.$.status":ret}})
 
 def custom_task(uuid,box,actions_list):
 	ret = False
@@ -334,7 +334,7 @@ def custom_task(uuid,box,actions_list):
 def vbox_remote_control(uuid,box):
 	ret = False
 	try:
-		queue = StrictRedis(redis_settings_localhost["host"], redis_settings_localhost["port"], db=0)
+		queue = Redis.from_url(redis_settings_docker)
 		virtual_machine = VirtualBox().find_machine(box["vm"])
 		vm_name_lock = "{}_lock".format(box["vm"])
 		vm_name_frame = "{}_frame".format(box["vm"])
@@ -345,7 +345,7 @@ def vbox_remote_control(uuid,box):
 			proc.wait_for_completion(timeout=-1)
 			with session.console.guest.create_session(box["user"], box["pass"]) as gs:
 				h, w, _, _, _, _ = session.console.display.get_screen_resolution(0)
-				update_item(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],uuid,{"status":"live","started_time":datetime.now()})
+				update_item(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],uuid,{"status":"live","started_time":datetime.now()})
 				queue.set(vm_name_lock, "False")
 				while queue.get(vm_name_lock) == b"False":
 					x,y,dz,dw,button_state,key = "false","false","false","false","false","false"
@@ -405,7 +405,7 @@ class kill_vm_and_keys_on_enter_and_exit(object):
 	def __init__(self,uuid,box):
 		self.uuid= uuid
 		self.box = box
-		self.r = StrictRedis(host=redis_settings_localhost["host"], port=redis_settings_localhost["port"], db=0)
+		self.r = Redis.from_url(redis_settings_docker)
 		self.vm_name_lock = "{}_lock".format(box["vm"])
 		self.vm_name_frame = "{}_frame".format(box["vm"])
 		self.vm_name_action = "{}_action".format(box["vm"])

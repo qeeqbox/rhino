@@ -3,7 +3,7 @@ __G__ = "(G)bd249ce4"
 from termcolor import colored
 from subprocess import Popen
 from time import sleep
-from redis import StrictRedis
+from redis import Redis
 from tempfile import gettempdir
 from os import path, mkdir
 from json import dumps,load
@@ -13,7 +13,6 @@ with open ('/settings/settings.json') as f:
     json_settings = load(f)
     all_boxes = json_settings["settings"]["all_boxes"]
     vbox_testing = json_settings["settings"]["vbox_testing"]
-    mongo_settings_localhost = json_settings["settings"]["mongo_settings_docker"]
     mongo_settings_docker = json_settings["settings"]["mongo_settings_docker"]
     celery_settings_localhost = json_settings["settings"]["celery_settings_docker"]
     celery_settings_docker = json_settings["settings"]["celery_settings_docker"]
@@ -30,7 +29,7 @@ processes = []
 if not path.exists(vbox_testing["temp"]):
 	mkdir(vbox_testing["temp"])
 
-r = StrictRedis(redis_settings_localhost["host"], redis_settings_localhost["port"], db=0)
+r = Redis.from_url(redis_settings_localhost)
 
 def clean_remote_control_keys():
 	try:

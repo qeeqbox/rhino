@@ -5,7 +5,7 @@ from os import path
 from sys import stdout
 from datetime import datetime
 from os import path
-from ..settings import mongo_settings_localhost
+from ..settings import mongo_settings_docker
 from ..connections.mongodbconn import update_task_logs
 
 dynamic_logger = None
@@ -38,7 +38,7 @@ class CustomHandler(Handler):
         stdout.flush()
         self.logsfile.write("{} {} {}\n".format(record.msg[0],record.msg[1],record.msg[2]))
         self.logsfile.flush()
-        update_task_logs(mongo_settings_localhost["worker_db"],mongo_settings_localhost["worker_col_logs"],record.msg[1],"{} {}".format(record.msg[0],record.msg[2]))
+        update_task_logs(mongo_settings_docker["worker_db"],mongo_settings_docker["worker_col_logs"],record.msg[1],"{} {}".format(record.msg[0],record.msg[2]))
 
 def log_string(uuid,_str,color):
     '''

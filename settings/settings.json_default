@@ -4,47 +4,29 @@
         }, 
         "backendkey": "w9AMMSqmKo4gFfEJs!Ghy4cRbE]xiynWKJhoUN(I1IfsOpJ0Z1KypuXhfH(lQQqQ92pvDobAsBCMoc^3M,0EzuO2wGk9fzhO0aWpkzSA7WXf.kDKafLpevawhfxJa3I#OJmlCNJE9Fa107A!g1s", 
         "celery_settings_docker": {
-            "celery_broker_url": "redis://redis:6379", 
-            "celery_result_backend": "redis://redis:6379", 
+            "celery_broker_url": "redis://:changeme_927dhgs810d712fxs1@redis:6379/0", 
+            "celery_result_backend": "redis://:changeme_927dhgs810d712fxs1@redis:6379/0", 
             "name": "tasks"
         }, 
         "celery_settings_localhost": {
-            "celery_broker_url": "redis://localhost:6379", 
-            "celery_result_backend": "redis://localhost:6379", 
+            "celery_broker_url": "redis://:changeme_927dhgs810d712fxs1@localhost:6379/0", 
+            "celery_result_backend": "redis://:changeme_927dhgs810d712fxs1@localhost:6379/0", 
             "name": "tasks"
         }, 
         "mongo_settings_docker": {
             "files": "results", 
             "malware": "malware", 
-            "url": "mongodb://mongodb:27017/", 
+            "settings_col": "settings", 
+            "settings_db": "project", 
+            "url": "mongodb://changeme_498fjh29hd61fsaqyu:changeme_0dk28de6g1s8ghwsqw@mongodb:27017/?authSource=admin", 
             "users_col_login": "auth", 
             "users_col_settings": "settings", 
             "users_db": "users", 
             "worker_col_logs": "logs", 
-            "worker_db": "worker",
-            "settings_col":"settings",
-            "settings_db":"project"
+            "worker_db": "worker"
         }, 
-        "mongo_settings_localhost": {
-            "files": "results", 
-            "malware": "malware", 
-            "url": "mongodb://localhost:27017/", 
-            "users_col_login": "auth", 
-            "users_col_settings": "settings", 
-            "users_db": "users", 
-            "worker_col_logs": "logs", 
-            "worker_db": "worker",
-            "settings_col":"settings",
-            "settings_db":"project"
-        }, 
-        "redis_settings_docker": {
-            "host": "redis", 
-            "port": "6379"
-        }, 
-        "redis_settings_localhost": {
-            "host": "localhost", 
-            "port": "6379"
-        }, 
+        "redis_settings_docker": "redis://:changeme_927dhgs810d712fxs1@redis:6379/0", 
+        "redis_settings_localhost": "redis://:changeme_927dhgs810d712fxs1@localhost:6379/0", 
         "vbox_testing": {
             "queue": "vbox_testing", 
             "temp": "/tmp/rhinotempfiles"

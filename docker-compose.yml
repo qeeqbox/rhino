@@ -52,29 +52,34 @@ services:
 
   redis:
     image: redis
+    command: redis-server --requirepass changeme_927dhgs810d712fxs1
     networks:
       - backend
       - frontend
     ports:
      - "6379:6379"
+    logging:
+      driver: none
 
   mongodb:
     build:
       context: .
       dockerfile: ./mongodb-Dockerfile
-    #image: mongo
-    restart: always
     networks:
       - backend
       - frontend
-    logging:
-        driver: none #no logging 
     ports:
      - "27017:27017"
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - ./folders/database:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: changeme_498fjh29hd61fsaqyu
+      MONGO_INITDB_ROOT_PASSWORD: changeme_0dk28de6g1s8ghwsqw
+    command: mongod --auth
+    logging:
+      driver: none
 
 networks:
   frontend:

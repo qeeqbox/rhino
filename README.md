@@ -40,8 +40,8 @@ Agile Sandbox for analyzing malware and execution behaviors. Customizable, Expan
 
 #### On ubuntu 18 or 19 System (Auto-configure)
 ```bash
-git clone https://github.com/qeeqbox/Rhino.git
-cd Rhino
+git clone https://github.com/qeeqbox/rhino.git
+cd rhino
 chmod +x ./run.sh
 ./run.sh auto_configure
 ```
@@ -49,8 +49,8 @@ The project interface http://localhost:5000/dashboard will open automatically af
 
 #### On ubuntu 18 or 19 System (Auto-configure Dummy)
 ```bash
-git clone https://github.com/qeeqbox/Rhino.git
-cd Rhino
+git clone https://github.com/qeeqbox/rhino.git
+cd rhino
 chmod +x ./run.sh
 ./run.sh auto_configure_dummy
 ```
@@ -58,8 +58,8 @@ The project interface http://localhost:5000/dashboard will open automatically af
 
 #### On ubuntu 18 or 19 System (Manually)
 ```bash
-git clone https://github.com/qeeqbox/Rhino.git
-cd Rhino
+git clone https://github.com/qeeqbox/rhino.git
+cd rhino
 chmod +x ./run.sh
 ./run.sh
 

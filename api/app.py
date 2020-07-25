@@ -5,7 +5,7 @@ from celery.task.control import inspect,revoke
 from celery import Celery
 from flask_cors import CORS
 from datetime import datetime
-from redis import StrictRedis
+from redis import Redis
 from pymongo import MongoClient
 from gridfs import GridFS
 from pandas import DataFrame,to_datetime
@@ -29,9 +29,10 @@ with open('/settings/settings.json') as f:
     vbox_testing = json_settings["settings"]["vbox_testing"]
     mongo_settings_docker = json_settings["settings"]["mongo_settings_docker"]
     celery_settings_docker = json_settings["settings"]["celery_settings_docker"]
+    redis_settings_docker = json_settings["settings"]["redis_settings_docker"]
     backendkey = json_settings["settings"]["backendkey"]
 
-r = StrictRedis(host="redis", port=6379, db=0)
+r = Redis.from_url(redis_settings_docker)
 client = MongoClient(mongo_settings_docker["url"])
 celery = Celery(celery_settings_docker["name"], broker=celery_settings_docker["celery_broker_url"], backend=celery_settings_docker["celery_result_backend"])
 celery.control.purge()
