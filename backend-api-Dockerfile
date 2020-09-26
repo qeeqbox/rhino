@@ -1,5 +1,6 @@
 FROM python:latest
-RUN pip install pandas psutil gunicorn flask celery redis flask-cors pymongo werkzeug flask-bcrypt
+RUN pip install pandas psutil gunicorn flask redis flask-cors pymongo werkzeug flask-bcrypt
+RUN pip install "celery==4.4.1"
 COPY ./api /api
 WORKDIR /api
 CMD ["gunicorn", "--bind", "0.0.0.0:5001", "--workers", "3", "app:app","--timeout","1000"]
